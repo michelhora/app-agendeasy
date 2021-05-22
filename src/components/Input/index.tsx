@@ -6,18 +6,17 @@ import React, {
   useState,
   useCallback,
 } from 'react';
-import { TextInputProps } from 'react-native';
-import { Container, TextInput, Icon } from './styles';
-import { useField } from '@unform/core';
+import { TextInputProps, Dimensions } from 'react-native';
+import { UnformContext, UnformField, useField } from '@unform/core';
 import InputScrollView from 'react-native-input-scroll-view';
-import { Dimensions } from 'react-native';
+import { Container, TextInput, Icon } from './styles';
 
 interface InputProps extends TextInputProps {
   name: string;
   icon: any;
-  label: string;
-  rawText: string;
-  onInitialData: any;
+  label?: string;
+  rawText?: string;
+  onInitialData?: any;
 }
 
 interface InputValueReference {
@@ -62,11 +61,11 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       name: fieldName,
       ref: inputValueRef.current,
       path: 'value',
-      getValue: (ref: any, value: string) => {
-        if (rawText) return rawText;
-        if (inputValueRef.current) return inputValueRef.current.value;
-        return '';
-      },
+      // getValue: (ref: any, value: string) => {
+      //   if (rawText) return rawText;
+      //   if (inputValueRef.current) return inputValueRef.current.value;
+      //   return '';
+      // },
       setValue(ref: any, value: string) {
         inputValueRef.current.value = value;
         inputElementRef.current.setNativeProps({ text: value });

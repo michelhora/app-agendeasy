@@ -8,16 +8,17 @@ import {
   Platform,
   TextInput,
   Alert,
+  StatusBar,
 } from 'react-native';
 
-import Input from '../../components/Input';
-import Button from '../../components/Button';
-import logoImg from '../../assets/logo.png';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import logoImg from '../../assets/logo.png';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 
 import {
   Container,
@@ -28,6 +29,7 @@ import {
   CreateAccountButtonText,
 } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../hooks/AuthContext';
 
 interface signInFormData {
   email: string;
@@ -38,6 +40,7 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
+  const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
     async (data: signInFormData) => {
@@ -54,7 +57,7 @@ const SignIn: React.FC = () => {
         await schema.validate(data, { abortEarly: false });
         console.log('aqui');
 
-        // signIn({ email: data.email, password: data.password });
+        signIn({ email: data.email, password: data.password });
       } catch (err) {
         const errors = getValidationErrors(err);
 
@@ -67,10 +70,11 @@ const SignIn: React.FC = () => {
         'Ocorreu um erro ao tentar fazer login, cheque as credenciais.',
       );
     },
-    [], // [signIn],
+    [signIn], // [signIn],
   );
   return (
     <>
+      <StatusBar barStyle="dark-content" backgroundColor="#f8f8f8" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}

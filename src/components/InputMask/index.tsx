@@ -25,8 +25,8 @@ const InputMask = ({ icon, type, ...rest }: any, inputValueRef: any) => {
 
   return (
     <TextInputMask
-      icon={icon ? icon : isCnpj ? 'briefcase' : 'file-text'}
-      type={type ? type : isCnpj ? 'cnpj' : 'cpf'}
+      icon={icon || (isCnpj ? 'briefcase' : 'file-text')}
+      type={type || (isCnpj ? 'cnpj' : 'cpf')}
       includeRawValueInChangeText
       value={text}
       onChangeText={handleChangeText}
